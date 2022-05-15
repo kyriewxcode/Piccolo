@@ -564,7 +564,7 @@ void Pilot::PVulkanContext::createSwapchain()
 
     if (vkCreateSwapchainKHR(_device, &createInfo, nullptr, &_swapchain) != VK_SUCCESS)
     {
-        throw std::runtime_error("vk create swapchain khr");
+        throw std::runtime_error("vk create swapchaincreateInfo = {VkSwapchainCreateInfoKHR} {sType=VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR, pNext=0x0000000000000000, flags=0, ...} khr");
     }
 
     vkGetSwapchainImagesKHR(_device, _swapchain, &image_count, nullptr);

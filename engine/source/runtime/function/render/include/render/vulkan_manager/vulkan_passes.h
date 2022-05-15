@@ -13,17 +13,45 @@ namespace Pilot
         VkImageView directional_light_shadow_color_image_view;
     };
 
-    class PColorGradingPass : public PRenderPassBase
+    struct ResolutionData
+    {
+        glm::vec4 screen_resolution;
+        glm::vec4 editor_screen_resolution;
+    };
+
+    class PBlurPass : public PRenderPassBase
     {
     public:
         void initialize(VkRenderPass render_pass, VkImageView input_attachment);
+
         void draw();
 
         void updateAfterFramebufferRecreate(VkImageView input_attachment);
 
     private:
         void setupDescriptorSetLayout();
+
         void setupPipelines();
+
+        void setupDescriptorSet();
+
+        void updateResolutionData();
+    };
+
+    class PColorGradingPass : public PRenderPassBase
+    {
+    public:
+        void initialize(VkRenderPass render_pass, VkImageView input_attachment);
+
+        void draw();
+
+        void updateAfterFramebufferRecreate(VkImageView input_attachment);
+
+    private:
+        void setupDescriptorSetLayout();
+
+        void setupPipelines();
+
         void setupDescriptorSet();
     };
 
@@ -31,13 +59,16 @@ namespace Pilot
     {
     public:
         void initialize(VkRenderPass render_pass, VkImageView input_attachment);
+
         void draw();
 
         void updateAfterFramebufferRecreate(VkImageView input_attachment);
 
     private:
         void setupDescriptorSetLayout();
+
         void setupPipelines();
+
         void setupDescriptorSet();
     };
 
@@ -45,12 +76,16 @@ namespace Pilot
     {
     public:
         void initialize(VkRenderPass render_pass);
+
         void setSurfaceUI(void* surface_ui);
+
         void draw(void* ui_state);
 
     private:
-        void  setDefaultStyle();
-        void  fontsUpload();
+        void setDefaultStyle();
+
+        void fontsUpload();
+
         void* m_surface_ui;
     };
 
@@ -58,31 +93,40 @@ namespace Pilot
     {
     public:
         void initialize(VkRenderPass render_pass, VkImageView scene_input_attachment, VkImageView ui_input_attachment);
+
         void draw();
 
         void updateAfterFramebufferRecreate(VkImageView scene_input_attachment, VkImageView ui_input_attachment);
 
     private:
         void setupDescriptorSetLayout();
+
         void setupPipelines();
+
         void setupDescriptorSet();
     };
 
-    extern void  surface_ui_register_input(void* m_surface_ui);
-    extern void  surface_ui_on_tick(void* surface_ui, void* ui_state);
+    extern void surface_ui_register_input(void* m_surface_ui);
+
+    extern void surface_ui_on_tick(void* surface_ui, void* ui_state);
+
     extern float surface_ui_content_scale(void* surface_ui);
 
     enum
     {
-        _main_camera_pass_gbuffer_a               = 0,
-        _main_camera_pass_gbuffer_b               = 1,
-        _main_camera_pass_gbuffer_c               = 2,
-        _main_camera_pass_backup_buffer_odd       = 3,
-        _main_camera_pass_backup_buffer_even      = 4,
-        _main_camera_pass_depth                   = 5,
-        _main_camera_pass_swap_chain_image        = 6,
+        _main_camera_pass_gbuffer_a                  = 0,
+        _main_camera_pass_gbuffer_b                  = 1,
+        _main_camera_pass_gbuffer_c                  = 2,
+        _main_camera_pass_backup_buffer_odd          = 3,
+        _main_camera_pass_backup_buffer_even         = 4,
+        _main_camera_pass_backup_buffer_sampler_odd  = 5,
+        _main_camera_pass_backup_buffer_sampler_even = 6,
+        _main_camera_pass_depth                      = 7,
+        _main_camera_pass_swap_chain_image           = 8,
+
         _main_camera_pass_custom_attachment_count = 5,
-        _main_camera_pass_attachment_count        = 7,
+        _main_camera_pass_custom_sampler_count    = 2,
+        _main_camera_pass_attachment_count        = 9,
     };
 
     enum
@@ -92,6 +136,7 @@ namespace Pilot
         _main_camera_subpass_forward_lighting,
         _main_camera_subpass_tone_mapping,
         _main_camera_subpass_color_grading,
+        _main_camera_subpass_blur,
         _main_camera_subpass_ui,
         _main_camera_subpass_combine_ui,
         _main_camera_subpass_count
@@ -136,7 +181,8 @@ namespace Pilot
 
         void initialize();
 
-        void draw(PColorGradingPass& color_grading_pass,
+        void draw(PBlurPass&         blur_pass,
+                  PColorGradingPass& color_grading_pass,
                   PToneMappingPass&  tone_mapping_pass,
                   PUIPass&           ui_pass,
                   PCombineUIPass&    combine_ui_pass,
@@ -144,7 +190,8 @@ namespace Pilot
                   void*              ui_state);
 
         // legacy
-        void drawForward(PColorGradingPass& color_grading_pass,
+        void drawForward(PBlurPass&         blur_pass,
+                         PColorGradingPass& color_grading_pass,
                          PToneMappingPass&  tone_mapping_pass,
                          PUIPass&           ui_pass,
                          PCombineUIPass&    combine_ui_pass,
@@ -163,24 +210,39 @@ namespace Pilot
 
     private:
         void setupAttachments();
+
         void setupRenderPass();
+
         void setupDescriptorSetLayout();
+
         void setupPipelines();
+
         void setupDescriptorSet();
+
         void setupFramebufferDescriptorSet();
+
         void setupSwapchainFramebuffers();
 
         void setupModelGlobalDescriptorSet();
+
         void setupSkyboxDescriptorSet();
+
         void setupAxisDescriptorSet();
+
         void setupParticleDescriptorSet();
+
         void setupGbufferLightingDescriptorSet();
 
         void drawMeshGbuffer();
+
         void drawDeferredLighting();
+
         void drawMeshLighting();
+
         void drawSkybox();
+
         void drawBillboardParticle();
+
         void drawAxis();
 
     private:

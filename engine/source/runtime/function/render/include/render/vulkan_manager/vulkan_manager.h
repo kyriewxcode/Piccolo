@@ -53,9 +53,9 @@ namespace Pilot
 
         // legacy
         void renderFrameForward(class Scene&                scene,
-                               class PilotRenderer*        pilot_renderer,
-                               struct SceneReleaseHandles& release_handles,
-                               void*                       ui_state);
+                                class PilotRenderer*        pilot_renderer,
+                                struct SceneReleaseHandles& release_handles,
+                                void*                       ui_state);
 
         // initialize vulkan from io->window
         int initialize(GLFWwindow* window, class Scene& scene, class PilotRenderer* pilot_renderer);
@@ -117,6 +117,7 @@ namespace Pilot
         PDirectionalLightShadowPass m_directional_light_shadow_pass;
         PPointLightShadowPass       m_point_light_shadow_pass;
         PMainCameraPass             m_main_camera_pass;
+        PBlurPass                   m_blur_pass;
         PColorGradingPass           m_color_grading_pass;
         PToneMappingPass            m_tone_mapping_pass;
         PUIPass                     m_ui_pass;
