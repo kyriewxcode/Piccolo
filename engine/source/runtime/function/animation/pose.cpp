@@ -60,10 +60,10 @@ void AnimationPose::blend(const AnimationPose& pose)
         auto&       bone_trans_one = m_bone_poses[i];
         const auto& bone_trans_two = pose.m_bone_poses[i];
 
-        float weight_one = m_weight.m_blend_weight[i];
-        float weight_two = pose.m_weight.m_blend_weight[i];
-
+        const float& weight_one = m_weight.m_blend_weight[i];
+        const float& weight_two = pose.m_weight.m_blend_weight[i];
         float sum_weight = weight_one + weight_two;
+
         if (sum_weight != 0)
         {
             float cur_weight           =  weight_two;
