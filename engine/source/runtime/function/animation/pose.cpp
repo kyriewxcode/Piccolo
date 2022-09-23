@@ -70,7 +70,7 @@ void AnimationPose::blend(const AnimationPose& pose)
             m_weight.m_blend_weight[i] = sum_weight;
             bone_trans_one.m_position = Vector3::lerp(bone_trans_one.m_position, bone_trans_two.m_position, cur_weight);
             bone_trans_one.m_scale    = Vector3::lerp(bone_trans_one.m_scale, bone_trans_two.m_scale, cur_weight);
-            bone_trans_one.m_rotation = Quaternion::nLerp(cur_weight, bone_trans_one.m_rotation, bone_trans_two.m_rotation,true);
+            bone_trans_one.m_rotation = Quaternion::sLerp(cur_weight, bone_trans_one.m_rotation, bone_trans_two.m_rotation,true);
         }
     }
 }

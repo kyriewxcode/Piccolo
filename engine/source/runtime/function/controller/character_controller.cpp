@@ -73,7 +73,16 @@ namespace Pilot
                                  horizontal_displacement.length(),
                                  hits))
         {
-            final_position += hits[0].hit_distance * -horizontal_direction;
+            Vector3 total_normal = Vector3::ZERO;
+            for (auto it = hits.begin(); it != hits.end(); it++)
+            {
+                total_normal += (*it).hit_normal.normalisedCopy();
+            }
+            total_normal.z = 0.0f;
+
+            float   sliding_distance  = total_normal.crossProduct(horizontal_displacement).z;
+            Vector3 sliding_direction = Vector3(-total_normal.y, total_normal.x, total_normal.z);
+            final_position += sliding_direction * sliding_distance;
         }
         else
         {
