@@ -121,6 +121,14 @@
                 }
             },
             "$typeName": "CameraComponent"
+        },
+        {
+            "$context": {
+                "camera_data_res": {
+                    "fov": 89.0
+                }
+            },
+            "$typeName": "CameraDataComponent"
         }
     ]
 }

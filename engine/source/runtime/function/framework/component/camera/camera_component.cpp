@@ -49,7 +49,6 @@ namespace Piccolo
     {
         if (!m_parent_object.lock())
             return;
-
         std::shared_ptr<Level> current_level = g_runtime_global_context.m_world_manager->getCurrentActiveLevel().lock();
         std::shared_ptr<Character> current_character = current_level->getCurrentActiveCharacter().lock();
         if (current_character == nullptr)
